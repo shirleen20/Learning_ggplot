@@ -245,6 +245,7 @@ plot_grid(plot1,plot2,plot3,plot4, rel_heights = c(1,3),
 
 plot_grid(plot1,plot2,plot3,plot4, labels = "AUTO") #can also use auto to label in lowercase
 
+#Producing Reports with knitr/ R Markdown
 
 
 
