@@ -144,3 +144,112 @@ gapminder%>%
 
 #ggplot(<DATA>,<AESTHETIC MAPPINGS>) + <GEOM>+ <GEOM> + <SCALES> + <FACETS>)
 
+#Challenge 13
+gapminder%>% 
+  ggplot(aes(x = pop, fill = continent))+
+  geom_density(alpha = 0.5)+
+  scale_x_log10()+
+  facet_wrap(~year)
+
+#Challenge 14
+install.packages("agridat")
+library(agridat)
+view(blackman.wheat)
+#my answer
+blackman.wheat %>% 
+  ggplot(aes(x=yield, y=gen, group=loc, colour=nitro))+
+  geom_point()+
+  scale_x_log10()+
+  geom_smooth(method = "lm", size = 1.5)+
+  facet_wrap(~loc)
+
+# Preparing plots for display
+rough_plot <- ggplot(data = a_countries, aes(x=year, y=lifeExp, colour = continent))+
+  geom_line()+
+  facet_wrap(~country)
+rough_plot +
+  labs(title="Figure 1",
+       x= "Year",
+       y="Life Expectancy",
+       colour= "Continent")
+#Challege 1- changes title and caption
+rough_plot <- ggplot(data = a_countries, aes(x=year, y=lifeExp, colour = continent))+
+  geom_line()+
+  facet_wrap(~country)
+rough_plot
+
+rough_plot +
+  labs(title="Growth in Life Expectancy for 'A' countries",
+       x= "Year",
+       y="Life Expectancy",
+       colour= "Continent",
+       caption="Source: gapminder data")+
+       theme_bw()+
+       theme(
+        panel.grid.minor = element_blank(), # element_ blank gets rids of things
+        plot.title = element_text(face = "bold")
+      )
+#Challenge 2
+rough_plot +
+  labs(title="Growth in Life Expectancy for 'A' countries",
+       x= "Year",                                       #x- axis title
+       y="Life Expectancy",                             #y- axis title
+       colour= "Continent",
+       caption="Source: gapminder data")+               #add caption  
+  theme_bw()+
+  theme(
+    panel.grid.minor = element_blank(),                   # element_ blank gets rids of things
+    strip.background = element_blank(),                   # removes grey boxes
+    panel.grid.major = element_line(size = 1),            #increase size of major grids
+    axis.title = element_text(size = 10, colour = "blue"),# changes the axis title font size and colour
+    legend.position = "bottom",                           #changes position of legend
+    plot.title = element_text(face = "bold")              # makes plot title bold
+  )
+# save plots
+lifeExp_plot <- rough_plot +
+  labs(title="Growth in Life Expectancy for 'A' countries",
+       x= "Year",                                       #x- axis title
+       y="Life Expectancy",                             #y- axis title
+       colour= "Continent",
+       caption="Source: gapminder data")+               #add caption  
+  theme_bw()+
+  theme(
+    panel.grid.minor = element_blank(),                   # element_ blank gets rids of things
+    strip.background = element_blank(),                   # removes grey boxes
+    panel.grid.major = element_line(size = 1),            #increase size of major grids
+    axis.title = element_text(size = 10, colour = "blue"),# changes the axis title font size and colour
+    legend.position = "bottom",                           #changes position of legend
+    plot.title = element_text(face = "bold")              # makes plot title bold
+  )
+
+lifeExp_plot
+ggsave(filename = "results/lifeExp.png", plot = lifeExp_plot,
+       width = 12, height = 10, dpi = 300, units = "cm")
+
+#can also change height and to jpg format
+ggsave(filename = "results/lifeExp.jpg", plot = lifeExp_plot,
+       width = 15, height = 12, dpi = 300, units = "cm")
+
+
+# Multi-panel plots
+install.packages("cowplot")
+library(cowplot) 
+
+plot1 <- ggplot(gapminder, aes(x=gdpPercap, y= lifeExp)) + geom_point()
+plot2 <- ggplot(gapminder, aes(x=continent, y= lifeExp)) + geom_boxplot()
+plot3 <- ggplot(gapminder, aes(x=gdpPercap, y= pop)) + geom_point()
+plot4 <- ggplot(gapminder, aes(x=lifeExp, y= pop)) + geom_point()
+
+plot_grid(plot1,plot2,plot3,plot4, rel_heights = c(1,3),
+  rel_widths=c(4,1)) # specify heights and widths of our rows
+
+plot_grid(plot1,plot2,plot3,plot4, labels = "AUTO") #can also use auto to label in lowercase
+
+
+
+
+
+
+
+
+
